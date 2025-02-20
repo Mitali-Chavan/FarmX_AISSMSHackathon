@@ -1,0 +1,50 @@
+<h2>Farmer Dashboard</h2>
+
+<h3>Your Products</h3>
+<ul>
+    {% for product in farmer_products %}
+        <li>{{ product.commodity }} - {{ product.quantity }} kg</li>
+    {% empty %}
+        <li>You have not added any products yet.</li>
+    {% endfor %}
+</ul>
+
+<!-- Button to Access Farmer Bids -->
+<a href="{% url 'farmer_bids' %}" class="btn btn-primary">view bid
+    
+</a>
+
+<h3>Bids Received</h3>
+<table border="1">
+    <tr>
+        <th>Retailer</th>
+        <th>Product</th>
+        <th>Bid Price (₹)</th>
+        <th>Bid Quantity</th>
+        <th>Status</th>
+        <th>Action</th>
+    </tr>
+    {% for bid in bids %}
+    <tr>
+        <td>{{ bid.retailer.username }}</td>
+        <td>{{ bid.product.commodity }}</td>
+        <td>₹{{ bid.bid_price }}</td>
+        <td>{{ bid.bid_quantity }}</td>
+        <td>{{ bid.status }}</td>
+        <td>
+            {% if bid.status == "Pending" %}
+                <a href="{% url 'handle_bid' bid.id 'accept' %}">
+                    <button>Accept</button>
+                </a>
+                <a href="{% url 'handle_bid' bid.id 'reject' %}">
+                    <button>Reject</button>
+                </a>
+            {% else %}
+                <span>{{ bid.status }}</span>
+            {% endif %}
+        </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="6">No bids received yet.</td></tr>
+    {% endfor %}
+</table>

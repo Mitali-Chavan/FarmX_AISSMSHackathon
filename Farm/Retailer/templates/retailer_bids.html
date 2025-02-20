@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Your Bids</h2>
+    <table class="table table-bordered mt-3">
+        <thead class="thead-dark">
+            <tr>
+                <th>Product</th>
+                <th>Bid Price (₹)</th>
+                <th>Bid Quantity</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bid in retailer_bids %}
+            <tr>
+                <td>{{ bid.product.commodity }}</td>
+                <td>₹{{ bid.bid_price }}</td>
+                <td>{{ bid.bid_quantity }}</td>
+                <td>
+                    {% if bid.status == "Accepted" %}
+                        <span class="badge bg-success">Accepted</span>
+                    {% elif bid.status == "Rejected" %}
+                        <span class="badge bg-danger">Rejected</span>
+                    {% else %}
+                        <span class="badge bg-warning text-dark">Pending</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="text-center">You haven't placed any bids yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

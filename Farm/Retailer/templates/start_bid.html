@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <h2>Start Bidding for {{ product.commodity }}</h2>
+    <p><strong>Farmer Price:</strong> ₹{{ product.farmerprice }}</p>
+    <p><strong>Base Price:</strong> ₹{{ product.baseprice }}</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <label for="bid_amount">Enter Bid Price:</label>
+        <input type="number" name="bid_amount" required>
+        
+        <label for="bid_quantity">Enter Quantity:</label>
+        <input type="number" name="bid_quantity" required>
+
+        <button type="submit" class="btn btn-success">Submit Bid</button>
+    </form>
+</div>
+<a href="{% url 'retailer_dashboard' %}">Back to Dashboard</a>
+{% endblock %}

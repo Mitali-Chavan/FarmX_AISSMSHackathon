@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Product List</h2>
+    
+    <!-- Buttons Section -->
+    <div class="mb-3">
+        <a href="{% url 'product_create' %}" class="btn btn-primary">Add Product</a>
+        <a href="{% url 'farmer_bid_list' %}" class="btn btn-success">See Bids</a>  <!-- See Bids Button -->
+    </div>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Commodity</th>
+                <th>Quantity</th>
+                <th>Farmer Price</th>
+                <th>Base Price</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr>
+                <td>{{ product.commodity }}</td>
+                <td>{{ product.quantity }}</td>
+                <td>{{ product.farmerprice }}</td>
+                <td>{{ product.baseprice }}</td>
+                <td>
+                    <a href="{% url 'product_update' product.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                    <a href="{% url 'product_delete' product.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center">No products available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<ul>
+    {% for product in farmer_products %}
+        <li>{{ product.commodity }} - {{ product.quantity }} kg</li>
+    {% empty %}
+        <li>You have not added any products yet.</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

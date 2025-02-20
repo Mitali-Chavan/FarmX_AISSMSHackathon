@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h3>Bids Received</h3>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-info">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Retailer</th>
+                <th>Product</th>
+                <th>Bid Price (₹)</th>
+                <th>Bid Quantity</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bid in bids %}
+            <tr>
+                <td>{{ bid.retailer.username }}</td>
+                <td>{{ bid.product.commodity }}</td>
+                <td>₹{{ bid.bid_price }}</td>
+                <td>{{ bid.bid_quantity }}</td>
+                <td>
+                    {% if bid.status == "Accepted" %}
+                        <span class="badge bg-success">Accepted</span>
+                    {% else %}
+                        <span class="badge bg-warning">Pending</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if bid.status == "Pending" %}
+                        <a href="{% url 'handle_bid' bid.id 'accept' %}" class="btn btn-success btn-sm">Accept</a>
+                        <a href="{% url 'handle_bid' bid.id 'reject' %}" class="btn btn-danger btn-sm">Reject</a>
+                    {% else %}
+                        <span class="text-muted">Handled</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center">No bids received yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Welcome to Farm Marketplace</h2>
+    <p><a href="{% url 'product_list' %}">View Farmer Products</a></p>
+    <p><a href="{% url 'retailer_dashboard' %}">View Retailer Dashboard</a></p>
+{% endblock %}

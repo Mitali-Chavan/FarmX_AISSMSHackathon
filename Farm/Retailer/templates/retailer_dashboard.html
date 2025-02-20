@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-info">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+<div class="container">
+    <!-- "View My Bids" Button -->
+    <div class="text-end mb-3">
+        <a href="{% url 'retailer_bids' %}" class="btn btn-secondary">View My Bids</a>
+    </div>
+
+    <h2 class="text-center my-4">Available Products</h2>
+    <div class="row">
+        {% for product in products %}
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="https://via.placeholder.com/150" class="card-img-top" alt="{{ product.commodity }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.commodity }}</h5>
+                    <p class="card-text">
+                        <strong>Quantity:</strong> {{ product.quantity }} kg<br>
+                        <strong>Farmer Price:</strong> ₹{{ product.farmerprice }}<br>
+                        <strong>Base Price:</strong> ₹{{ product.baseprice }}
+                    </p>
+                    <a href="{% url 'start_bid' product.id %}" class="btn btn-primary">Start Bidding</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p class="text-center">No products available.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
