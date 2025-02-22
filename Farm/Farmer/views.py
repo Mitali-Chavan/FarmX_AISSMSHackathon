@@ -59,11 +59,26 @@ from Retailer.models import Bid
 
 def handle_bid(request, bid_id, action):
     bid = get_object_or_404(Bid, id=bid_id)
+    product = bid.product  # Get the associated product
 
     if action == "accept":
-        bid.status = "Accepted"
-        bid.save()
-        messages.success(request, f"Bid for {bid.product.commodity} has been accepted!")
+        print(f"Before Acceptance: Available = {product.available_quantity()}, Sold = {product.soldquantity}, Bid Quantity = {bid.bid_quantity}")
+
+        # Check if there's enough quantity left to fulfill the bid
+        if product.available_quantity() >= bid.bid_quantity:
+            bid.status = "Accepted"
+            bid.save()
+
+            # Deduct the sold quantity from the product
+            product.soldquantity += bid.bid_quantity
+            product.save()
+
+            print(f"After Acceptance: Available = {product.available_quantity()}, Sold = {product.soldquantity}")
+
+
+            messages.success(request, f"Bid for {bid.product.commodity} has been accepted!")
+        else:
+            messages.error(request, f"Not enough stock available for {bid.product.commodity}.")
     elif action == "reject":
         messages.info(request, f"Bid for {bid.product.commodity} has been rejected.")
         bid.delete()  # Delete the rejected bid
@@ -81,3 +96,25 @@ def farmer_bid_list(request):
 
     return render(request, 'Farmer/farmer_bids.html', {'bids': bids})
 
+from django.shortcuts import render, redirect
+from .forms import FarmerSignUpForm
+
+def farmer_register(request):
+    if request.method == 'POST':
+        form = FarmerSignUpForm(request.POST)
+        if form.is_valid():
+            form.save()  # This now saves both User and FarmerProfile
+            return redirect('farmer_login')  # Adjust as needed
+    else:
+        form = FarmerSignUpForm()
+    return render(request, 'farmer/register.html', {'form': form})
+
+from django.contrib.auth.views import LoginView
+from django.urls import reverse_lazy
+
+class FarmerLoginView(LoginView):
+    template_name = "farmer/login.html"
+    
+    def get_success_url(self):
+        # Assumes you have a URL pattern named 'product_list'
+        return reverse_lazy('product_list')

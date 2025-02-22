@@ -3,10 +3,10 @@
 {% block content %}
 
 {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-info">{{ message }}</div>
-        {% endfor %}
-    {% endif %}
+    {% for message in messages %}
+        <div class="alert alert-info">{{ message }}</div>
+    {% endfor %}
+{% endif %}
 
 <div class="container">
     <!-- "View My Bids" Button -->
@@ -19,13 +19,16 @@
         {% for product in products %}
         <div class="col-md-4 mb-4">
             <div class="card">
-                <img src="https://via.placeholder.com/150" class="card-img-top" alt="{{ product.commodity }}">
+                
+                    <img src="{{ product.product_photo.url }}" class="card-img-top" alt="{{ product.commodity }}" style="height: 200px; object-fit: cover;">
+               
                 <div class="card-body">
                     <h5 class="card-title">{{ product.commodity }}</h5>
                     <p class="card-text">
                         <strong>Quantity:</strong> {{ product.quantity }} kg<br>
                         <strong>Farmer Price:</strong> ₹{{ product.farmerprice }}<br>
-                        <strong>Base Price:</strong> ₹{{ product.baseprice }}
+                        <strong>Base Price:</strong> ₹{{ product.baseprice }}<br>
+                        <strong>Sold Quantity:</strong> {{ product.soldquantity }} kg<br>
                     </p>
                     <a href="{% url 'start_bid' product.id %}" class="btn btn-primary">Start Bidding</a>
                 </div>

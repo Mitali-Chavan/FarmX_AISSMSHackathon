@@ -40,3 +40,30 @@ def start_bid(request, product_id):
         return redirect('retailer_bids')  # ✅ Redirect to bids page after placing a bid
 
     return render(request, "start_bid.html", {"product": product})
+
+
+from django.shortcuts import render, redirect
+from .forms import RetailerSignUpForm
+
+def retailer_register(request):
+    if request.method == 'POST':
+        form = RetailerSignUpForm(request.POST)
+        if form.is_valid():
+            form.save()  # This now saves both User and RetailerProfile
+            return redirect('retailer_login')  # Adjust as needed
+    else:
+        form = RetailerSignUpForm()
+    return render(request, 'retailer/register.html', {'form': form})
+
+
+from django.contrib.auth.views import LoginView
+from django.urls import reverse_lazy
+from django.shortcuts import render
+from .models import Product
+
+class RetailerLoginView(LoginView):
+    template_name = "retailer/login.html"
+
+    def get_success_url(self):
+        return reverse_lazy('retailer_dashboard')  # Redirect to retailer_dashboard
+

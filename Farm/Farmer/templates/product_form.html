@@ -3,13 +3,55 @@
 {% block content %}
 <div class="container mt-4">
     <h2>{% if form.instance.pk %}Edit Product{% else %}Add Product{% endif %}</h2>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
+        
         <div class="mb-3">
-            {{ form.as_p }}
+            <label for="id_commodity" class="form-label">Commodity</label>
+            {{ form.commodity }}
         </div>
+
+        <div class="mb-3">
+            <label for="id_quantity" class="form-label">Quantity</label>
+            {{ form.quantity }}
+        </div>
+
+        <div class="mb-3">
+            <label for="id_farmerprice" class="form-label">Farmer Price</label>
+            {{ form.farmerprice }}
+        </div>
+
+        <div class="mb-3">
+            <label for="id_baseprice" class="form-label">Base Price (price per kg)</label>
+            <input type="text" id="id_baseprice" class="form-control" value="{{ form.instance.baseprice }}" readonly>
+        </div>
+
+        <div class="mb-3">
+            <label for="id_product_photo" class="form-label">Product Image</label>
+            {{ form.product_photo }}
+        </div>
+
         <button type="submit" class="btn btn-success">Save</button>
         <a href="{% url 'product_list' %}" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
+
+<!-- Script to Auto-Update Base Price on Commodity Change -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let commodityField = document.getElementById("id_commodity");
+        let basePriceField = document.getElementById("id_baseprice");
+
+        const basePrices = {
+            "Wheat": 25.00,
+            "Rice": 30.00,
+            "Pulses": 50.00
+        };
+
+        commodityField.addEventListener("change", function () {
+            basePriceField.value = basePrices[commodityField.value] || 25.00;  // Default to Wheat
+        });
+    });
+</script>
+
 {% endblock %}

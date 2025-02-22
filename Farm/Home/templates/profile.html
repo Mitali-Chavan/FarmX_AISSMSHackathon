@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}My Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2 class="text-center">My Profile</h2>
+  <div class="card mx-auto" style="max-width: 600px;">
+    <div class="card-body">
+      <h4 class="card-title">{{ user.username }}</h4>
+      <p><strong>Email:</strong> {{ user.email }}</p>
+
+      {% if farmer_profile %}
+      <hr>
+      <h5>Farmer Details</h5>
+      <p><strong>Phone Number:</strong> {{ farmer_profile.phone_number }}</p>
+      <p><strong>License Number:</strong> {{ farmer_profile.farmer_license_number }}</p>
+      {% if farmer_profile.farmer_photo %}
+      <div class="mb-3">
+          <img src="{{ farmer_profile.farmer_photo.url }}" alt="Farmer Photo" class="img-thumbnail" style="max-width:150px;">
+      </div>
+      {% endif %}
+      {% endif %}
+
+      {% if retailer_profile %}
+      <hr>
+      <h5>Retailer Details</h5>
+      <p><strong>Phone Number:</strong> {{ retailer_profile.phone_number }}</p>
+      <p><strong>License Number:</strong> {{ retailer_profile.retailer_license_number }}</p>
+      {% if retailer_profile.retailer_photo %}
+      <div class="mb-3">
+          <img src="{{ retailer_profile.retailer_photo.url }}" alt="Retailer Photo" class="img-thumbnail" style="max-width:150px;">
+      </div>
+      {% endif %}
+      {% endif %}
+
+      {% if not farmer_profile and not retailer_profile %}
+      <div class="alert alert-warning mt-3" role="alert">
+          No additional profile details found.
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
