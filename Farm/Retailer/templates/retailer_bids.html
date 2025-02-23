@@ -2,12 +2,13 @@
 
 {% block content %}
 <div class="container mt-5">
-    <h2 class="text-center">Your Bids</h2>
-    <table class="table table-bordered mt-3">
+    <h2 class="text-center fw-bold">BID LIST</h2>
+    <hr>
+    <table class="table table-bordered mt-3 text-center">
         <thead class="thead-dark">
-            <tr>
+            <tr class="table-secondary">
                 <th>Product</th>
-                <th>Bid Price (₹)</th>
+                <th>Bid Price</th>
                 <th>Bid Quantity</th>
                 <th>Status</th>
             </tr>
@@ -16,7 +17,7 @@
             {% for bid in retailer_bids %}
             <tr>
                 <td>{{ bid.product.commodity }}</td>
-                <td>₹{{ bid.bid_price }}</td>
+                <td>{{ bid.bid_price }}</td>
                 <td>{{ bid.bid_quantity }}</td>
                 <td>
                     {% if bid.status == "Accepted" %}
@@ -30,10 +31,13 @@
             </tr>
             {% empty %}
             <tr>
-                <td colspan="4" class="text-center">You haven't placed any bids yet.</td>
+                <td colspan="4" class="text-center">No bids placed yet.</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+    <div class="text-center mt-3">
+        <a href="{% url 'retailer_dashboard' %}" class="btn btn-dark">Back</a>
+    </div>
 </div>
 {% endblock %}

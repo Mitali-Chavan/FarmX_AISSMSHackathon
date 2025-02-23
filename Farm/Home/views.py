@@ -67,3 +67,10 @@ def profile(request):
         'retailer_profile': retailer_profile,
     }
     return render(request, 'profile.html', context)
+
+
+def about(request):
+    return render(request, 'home/about.html')
+
+def contact(request):
+    return render(request, 'home/contact.html')

@@ -1,33 +1,39 @@
-<div class="stock-ribbon" id="stock-ribbon" data-url="{% url 'update_ribbon' %}">
+<div class="stock-ribbon" id="stock-ribbon" data-url="{% url 'update_ribbon' %}" style="background-color: yellow; padding: 5px;">
     {% for product in products %}
         <span>
-            {{ product.commodity }}: 
-            <span style="color: blue;">Base ₹{{ product.baseprice }}</span> | 
-            <span style="color: green;">Highest Accepted ₹{{ product.highest_farmers_accepted_price|default:"N/A" }}</span>
-        </span> |
+            <strong>{{ product.commodity }}:</strong> 
+            <strong>Base</strong> ₹{{ product.baseprice }} - 
+            <strong>Highest Accepted</strong> ₹{{ product.highest_farmers_accepted_price|default:"N/A" }}
+        </span>
+        {% if not forloop.last %} | {% endif %}
     {% endfor %}
 </div>
 
 <script>
-    function updateStockRibbon() {
-        let url = document.getElementById("stock-ribbon").dataset.url;
+  function updateStockRibbon() {
+    const ribbon = document.getElementById("stock-ribbon");
+    const url = ribbon.dataset.url;
 
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                let ribbonContent = "";
-                data.forEach(item => {
-                    ribbonContent += `
-                        <span>
-                            ${item.commodity}: 
-                            <span style="color: blue;">Base ₹${item.base_price}</span> | 
-                            <span style="color: green;">Highest Accepted ₹${item.highest_farmers_accepted_price !== "N/A" ? item.highest_farmers_accepted_price : "item.highest_farmers_accepted_price"}</span>
-                        </span> | `;
-                });
-                document.getElementById("stock-ribbon").innerHTML = ribbonContent;
-            })
-            .catch(error => console.error("Error updating stock ribbon:", error));
-    }
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+          console.log("Fetched data:", data);  // Debug: Check data structure
+          
+          const items = data.map(item => {
+            let str = `<span><strong>${item.commodity}:</strong> <span style="color: blue;">Base ₹${item.base_price}</span>`;
+            if (item.highest_farmers_accepted_price && item.highest_farmers_accepted_price !== "N/A") {
+              str += ` | <span style="color: green;">Highest Accepted ₹${item.highest_farmers_accepted_price}</span>`;
+            }
+            str += `</span>`;
+            return str;
+          });
+          
+          // Join without trailing pipe
+          ribbon.innerHTML = items.join(" | ");
+      })
+      .catch(error => console.error("Error updating stock ribbon:", error));
+  }
 
-    setInterval(updateStockRibbon, 5000);  // Update every 5 seconds
+  // Update every 5 seconds
+  setInterval(updateStockRibbon, 5000);
 </script>

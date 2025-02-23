@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block title %}Contact Us - KrishiSetu{% endblock %}
+
+{% block content %}
+<section class="contact-container">
+  <style>
+    .contact-container {
+      padding: 40px 20px;
+      text-align: center;
+    }
+    .contact-container .content {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .contact-container h1 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+    }
+    .contact-container h2 {
+      font-size: 1.8em;
+      margin-top: 40px;
+      margin-bottom: 20px;
+    }
+    .contact-container p {
+      font-size: 1.1em;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+    form {
+      text-align: left;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 15px;
+    }
+    .form-group label {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    form button {
+      background-color: #2E8B57;
+      color: #fff;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1em;
+      margin-top: 10px;
+    }
+    form button:hover {
+      background-color: #246f46;
+    }
+    .contact-container ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 30px;
+      font-size: 1.1em;
+    }
+    .contact-container ul li {
+      margin-bottom: 5px;
+    }
+  </style>
+
+  <div class="content">
+    <h1>Contact Us</h1>
+    <p>
+      If you have any questions, suggestions, or need assistance, please feel free to reach out to us. We’re here to help!
+    </p>
+
+    <form method="post" action="/contact">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" placeholder="Your Name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="Your Email" required>
+      </div>
+
+      <div class="form-group">
+        <label for="subject">Subject:</label>
+        <input type="text" id="subject" name="subject" placeholder="Subject" required>
+      </div>
+
+      <div class="form-group">
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" rows="5" placeholder="Your Message" required></textarea>
+      </div>
+
+      <button type="submit">Send Message</button>
+    </form>
+
+    <h2>Other Ways to Reach Us</h2>
+    <ul>
+      <li>Email: support@krishisetu.com</li>
+      <li>Phone: +91 12345 67890</li>
+      <li>Address: 123 Agriculture Lane, Rural City, India</li>
+    </ul>
+  </div>
+</section>
+{% endblock %}

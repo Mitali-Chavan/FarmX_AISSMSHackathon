@@ -1,55 +1,114 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load static %}
 
 {% block content %}
+<style>
+  /* Container to limit table width and center it */
+  .table-container {
+    max-width: 900px; /* Adjust width slightly */
+    margin: 0 auto;
+  }
+
+  /* Main table styling */
+  .bid-table {
+    border: 2px solid #000; /* Thick outer border */
+    border-radius: 4px;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0; /* Ensures borders look consistent */
+  }
+
+  /* Header row styling */
+  .bid-table thead tr {
+    background-color: #ddd; /* Grey background */
+    font-weight: 600;       /* Bold column titles */
+    border-bottom: 2px solid #000; /* Thicker bottom border */
+  }
+
+  /* Header cells */
+  .bid-table th {
+    text-align: center;
+    padding: 10px;
+    border-right: 1px solid #000; /* Vertical dividers */
+  }
+  .bid-table th:last-child {
+    border-right: none; /* No border on last column header */
+  }
+
+  /* Table body cells */
+  .bid-table td {
+    text-align: center;
+    border: 1px solid #ccc; /* Faint grid lines inside */
+    padding: 10px;
+  }
+
+  /* Center the back button */
+  .back-btn-container {
+    text-align: center;
+    margin-top: 20px; /* Adds space between table and button */
+  }
+</style>
+
 <div class="container mt-4">
-    <h3>Bids Received</h3>
+  <!-- Heading with underline -->
+  <h2 class="text-center" style="text-decoration: underline; margin-bottom: 30px;">BID LIST</h2>
 
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-info">{{ message }}</div>
-        {% endfor %}
-    {% endif %}
+  <!-- Display Messages (if any) -->
+  {% if messages %}
+      {% for message in messages %}
+          <div class="alert alert-info">{{ message }}</div>
+      {% endfor %}
+  {% endif %}
 
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Retailer</th>
-                <th>Product</th>
-                <th>Bid Price (₹)</th>
-                <th>Bid Quantity</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for bid in bids %}
-            <tr>
-                <td>{{ bid.retailer.username }}</td>
-                <td>{{ bid.product.commodity }}</td>
-                <td>₹{{ bid.bid_price }}</td>
-                <td>{{ bid.bid_quantity }}</td>
-                <td>
-                    {% if bid.status == "Accepted" %}
-                        <span class="badge bg-success">Accepted</span>
-                    {% else %}
-                        <span class="badge bg-warning">Pending</span>
-                    {% endif %}
-                </td>
-                <td>
-                    {% if bid.status == "Pending" %}
-                        <a href="{% url 'handle_bid' bid.id 'accept' %}" class="btn btn-success btn-sm">Accept</a>
-                        <a href="{% url 'handle_bid' bid.id 'reject' %}" class="btn btn-danger btn-sm">Reject</a>
-                    {% else %}
-                        <span class="text-muted">Handled</span>
-                    {% endif %}
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="6" class="text-center">No bids received yet.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
+  <div class="table-container">
+    <table class="bid-table">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Bid Price (₹)</th>
+          <th>Bid Quantity (kg)</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if bids %}
+          {% for bid in bids %}
+          <tr>
+            <td>{{ bid.product.commodity }}</td>
+            <td>{{ bid.bid_price|floatformat:2 }}</td>
+            <td>{{ bid.bid_quantity|floatformat:1 }}</td>
+            <td>
+              {% if bid.status == "Pending" %}
+                <a href="{% url 'handle_bid' bid.id 'accept' %}" class="btn btn-success btn-sm me-2">
+                  Accept
+                </a>
+                <a href="{% url 'handle_bid' bid.id 'reject' %}" class="btn btn-danger btn-sm">
+                  Reject
+                </a>
+              {% elif bid.status == "Accepted" %}
+                <span class="text-success fw-bold">Accepted</span>
+              {% elif bid.status == "Rejected" %}
+                <span class="text-danger fw-bold">Rejected</span>
+              {% else %}
+                <span class="text-muted">N/A</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="4" class="text-center text-muted">
+              No bids received yet.
+            </td>
+          </tr>
+        {% endif %}
+      </tbody>
     </table>
+  </div>
+
+  <!-- Centered Back Button -->
+  <div class="back-btn-container">
+    <a href="javascript:history.back()" class="btn btn-dark">Back</a>
+  </div>
 </div>
 {% endblock %}

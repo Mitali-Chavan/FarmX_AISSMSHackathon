@@ -1,42 +1,45 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="container mt-4">
-    <h2>{% if form.instance.pk %}Edit Product{% else %}Add Product{% endif %}</h2>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        
-        <div class="mb-3">
-            <label for="id_commodity" class="form-label">Commodity</label>
-            {{ form.commodity }}
-        </div>
+<div class="d-flex flex-column align-items-center min-vh-100 py-5" style="background-color: #ffffff;">
+    <!-- Title Outside the Box -->
+    <h2 class="fw-bold text-center mb-3" style="text-transform: uppercase; letter-spacing: 1px;">
+        ADD PRODUCT
+    </h2>
+    <div class="card shadow-lg p-4" style="max-width: 500px; width: 100%; border-radius: 10px;">
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
 
-        <div class="mb-3">
-            <label for="id_quantity" class="form-label">Quantity</label>
-            {{ form.quantity }}
-        </div>
+                <div class="mb-3 d-flex justify-content-between align-items-center">
+                    <label for="id_commodity" class="fw-bold">Commodity:</label>
+                    {{ form.commodity }}
+                </div>
 
-        <div class="mb-3">
-            <label for="id_farmerprice" class="form-label">Farmer Price</label>
-            {{ form.farmerprice }}
-        </div>
+                <div class="mb-3 d-flex justify-content-between align-items-center">
+                    <label for="id_quantity" class="fw-bold">Quantity:</label>
+                    {{ form.quantity }}
+                </div>
 
-        <div class="mb-3">
-            <label for="id_baseprice" class="form-label">Base Price (price per kg)</label>
-            <input type="text" id="id_baseprice" class="form-control" value="{{ form.instance.baseprice }}" readonly>
-        </div>
+                <div class="mb-3 d-flex justify-content-between align-items-center">
+                    <label for="id_farmerprice" class="fw-bold">Farmer Price:</label>
+                    {{ form.farmerprice }}
+                </div>
 
-        <div class="mb-3">
-            <label for="id_product_photo" class="form-label">Product Image</label>
-            {{ form.product_photo }}
-        </div>
+                <div class="mb-3 d-flex justify-content-between align-items-center">
+                    <label for="id_baseprice" class="fw-bold">Base Price (per kg):</label>
+                    <input type="text" id="id_baseprice" class="form-control w-50 text-end" value="{{ form.instance.baseprice }}" readonly>
+                </div>
 
-        <button type="submit" class="btn btn-success">Save</button>
-        <a href="{% url 'product_list' %}" class="btn btn-secondary">Cancel</a>
-    </form>
+                <div class="d-flex justify-content-between">
+                    <a href="{% url 'product_list' %}" class="btn btn-dark px-4">Cancel</a>
+                    <button type="submit" class="btn btn-success px-4">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
-<!-- Script to Auto-Update Base Price on Commodity Change -->
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         let commodityField = document.getElementById("id_commodity");

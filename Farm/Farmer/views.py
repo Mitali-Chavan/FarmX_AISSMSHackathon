@@ -13,8 +13,12 @@ def product_create(request):
     if request.method == 'POST':
         form = ProductForm(request.POST)
         if form.is_valid():
-            form.save()
+            product = form.save(commit=False)
+            product.farmer = request.user  # Assign the current user
+            product.save()
             return redirect('product_list')
+        else:
+            print(form.errors)  # Debug: Print any form errors in the console
     else:
         form = ProductForm()
     return render(request, 'product_form.html', {'form': form})
@@ -101,10 +105,10 @@ from .forms import FarmerSignUpForm
 
 def farmer_register(request):
     if request.method == 'POST':
-        form = FarmerSignUpForm(request.POST)
+        form = FarmerSignUpForm(request.POST)  # Removed request.FILES
         if form.is_valid():
-            form.save()  # This now saves both User and FarmerProfile
-            return redirect('farmer_login')  # Adjust as needed
+            form.save()
+            return redirect('farmer_login')
     else:
         form = FarmerSignUpForm()
     return render(request, 'farmer/register.html', {'form': form})

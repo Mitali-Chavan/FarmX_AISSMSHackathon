@@ -41,7 +41,6 @@ def start_bid(request, product_id):
 
     return render(request, "start_bid.html", {"product": product})
 
-
 from django.shortcuts import render, redirect
 from .forms import RetailerSignUpForm
 
@@ -55,15 +54,11 @@ def retailer_register(request):
         form = RetailerSignUpForm()
     return render(request, 'retailer/register.html', {'form': form})
 
-
 from django.contrib.auth.views import LoginView
 from django.urls import reverse_lazy
-from django.shortcuts import render
-from .models import Product
 
 class RetailerLoginView(LoginView):
     template_name = "retailer/login.html"
 
     def get_success_url(self):
         return reverse_lazy('retailer_dashboard')  # Redirect to retailer_dashboard
-

@@ -18,9 +18,8 @@ class Product(models.Model):
     commodity = models.CharField(max_length=100, choices=COMMODITY_CHOICES)  # Choices added
     quantity = models.FloatField()
     farmerprice = models.DecimalField(max_digits=10, decimal_places=2)
-    baseprice = models.DecimalField(max_digits=10, decimal_places=2, default=25.00)  # Default for Wheat
+    baseprice = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)  # Default for Wheat
     soldquantity = models.FloatField(default=0)
-    product_photo = models.ImageField(upload_to='product_images/', null=True, blank=True)
 
     def save(self, *args, **kwargs):
         if not self.baseprice:  # If baseprice is not set, assign based on commodity
@@ -41,7 +40,6 @@ class FarmerProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=15)
     farmer_license_number = models.CharField(max_length=50)
-    farmer_photo = models.ImageField(upload_to='farmer_images/', null=True, blank=True)
 
     
     def __str__(self):
