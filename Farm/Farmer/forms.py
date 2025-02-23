@@ -1,14 +1,11 @@
 from django import forms
+from django import forms
 from .models import Product
 
 class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ['commodity', 'quantity', 'farmerprice']
-        widgets = {
-            'baseprice': forms.NumberInput(attrs={'readonly': 'readonly'})  # Make it read-only in the template
-        }
-    commodity = forms.ChoiceField(choices=Product.COMMODITY_CHOICES)  # Accessing choices from the model
+        fields = ['commodity', 'quantity', 'farmerprice', 'product_photo']
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm

@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
 {% if messages %}
     {% for message in messages %}
         <div class="alert alert-info">{{ message }}</div>
@@ -19,6 +18,9 @@
         {% for product in products %}
         <div class="col-md-4 mb-4">
             <div class="card">
+                {% if product.product_photo %}
+                <img src="{{ product.product_photo.url }}" class="card-img-top" alt="{{ product.commodity }}" style="height: 200px; object-fit: cover;">
+                {% endif %}
                 <div class="card-body">
                     <h5 class="card-title">{{ product.commodity }}</h5>
                     <p class="card-text">
@@ -36,5 +38,4 @@
         {% endfor %}
     </div>
 </div>
-
 {% endblock %}

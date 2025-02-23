@@ -2,35 +2,31 @@
 
 {% block content %}
 <div class="d-flex flex-column align-items-center min-vh-100 py-5" style="background-color: #ffffff;">
-    <!-- Title Outside the Box -->
-    <h2 class="fw-bold text-center mb-3" style="text-transform: uppercase; letter-spacing: 1px;">
-        ADD PRODUCT
-    </h2>
+    <h2 class="fw-bold text-center mb-3" style="text-transform: uppercase; letter-spacing: 1px;">ADD PRODUCT</h2>
     <div class="card shadow-lg p-4" style="max-width: 500px; width: 100%; border-radius: 10px;">
         <div class="card-body">
-            <form method="post">
+            <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-
                 <div class="mb-3 d-flex justify-content-between align-items-center">
                     <label for="id_commodity" class="fw-bold">Commodity:</label>
                     {{ form.commodity }}
                 </div>
-
                 <div class="mb-3 d-flex justify-content-between align-items-center">
                     <label for="id_quantity" class="fw-bold">Quantity:</label>
                     {{ form.quantity }}
                 </div>
-
                 <div class="mb-3 d-flex justify-content-between align-items-center">
                     <label for="id_farmerprice" class="fw-bold">Farmer Price:</label>
                     {{ form.farmerprice }}
                 </div>
-
                 <div class="mb-3 d-flex justify-content-between align-items-center">
                     <label for="id_baseprice" class="fw-bold">Base Price (per kg):</label>
                     <input type="text" id="id_baseprice" class="form-control w-50 text-end" value="{{ form.instance.baseprice }}" readonly>
                 </div>
-
+                <div class="mb-3 d-flex justify-content-between align-items-center">
+                    <label for="id_product_photo" class="fw-bold">Product Image:</label>
+                    {{ form.product_photo }}
+                </div>
                 <div class="d-flex justify-content-between">
                     <a href="{% url 'product_list' %}" class="btn btn-dark px-4">Cancel</a>
                     <button type="submit" class="btn btn-success px-4">Save</button>
@@ -44,17 +40,14 @@
     document.addEventListener("DOMContentLoaded", function () {
         let commodityField = document.getElementById("id_commodity");
         let basePriceField = document.getElementById("id_baseprice");
-
         const basePrices = {
             "Wheat": 25.00,
             "Rice": 30.00,
             "Pulses": 50.00
         };
-
         commodityField.addEventListener("change", function () {
-            basePriceField.value = basePrices[commodityField.value] || 25.00;  // Default to Wheat
+            basePriceField.value = basePrices[commodityField.value] || 25.00;
         });
     });
 </script>
-
 {% endblock %}

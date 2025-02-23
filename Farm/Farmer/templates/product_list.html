@@ -3,14 +3,12 @@
 {% block content %}
 <div class="container mt-4">
     <h2 class="mb-4 text-center">My Products</h2>
-
-    
-
     {% if products %}
     <div class="table-responsive">
         <table class="table table-bordered table-hover">
             <thead class="table-dark text-center">
                 <tr>
+                    <th>Image</th>
                     <th>Commodity</th>
                     <th>Quantity (kg)</th>
                     <th>Farmer's Price (₹)</th>
@@ -22,6 +20,13 @@
             <tbody>
                 {% for product in products %}
                 <tr class="align-middle">
+                    <td class="text-center">
+                        {% if product.product_photo %}
+                        <img src="{{ product.product_photo.url }}" alt="{{ product.commodity }}" style="max-width: 100px; height: auto;">
+                        {% else %}
+                        <span class="text-muted">No Image</span>
+                        {% endif %}
+                    </td>
                     <td>{{ product.commodity }}</td>
                     <td>{{ product.quantity }}</td>
                     <td>₹{{ product.farmerprice }}</td>
@@ -46,7 +51,6 @@
     </div>
     {% endif %}
 </div>
-<!-- Action Buttons -->
 <div class="d-flex justify-content-between mb-3">
     <a href="{% url 'product_create' %}" class="btn btn-primary">
         <i class="fas fa-plus"></i> Add Product
