@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{%load static%}
 
 
 {% block content %}
@@ -69,19 +69,19 @@
     <h2>Our Team</h2>
     <div class="team-container">
       <div class="team-member">
-        <img src="#" alt="Sunita Pawar">
+        <img src="{% static 'sunita.jpg' %}" alt="Sunita Pawar">
         <p>Sunita Pawar</p>
       </div>
       <div class="team-member">
-        <img src="#" alt="Ankita Swain">
+        <img src="{% static 'ankita.jpg' %}" alt="Ankita Swain">
         <p>Ankita Swain</p>
       </div>
       <div class="team-member">
-        <img src="#" alt="Mitali Chavan">
+        <img src="{% static 'mitali.jpg' %}" alt="Mitali Chavan">
         <p>Mitali Chavan</p>
       </div>
       <div class="team-member">
-        <img src="#" alt="Neha Potu">
+        <img src="{% static 'neha.jpg' %}" alt="Neha Potu">
         <p>Neha Potu</p>
       </div>
     </div>
